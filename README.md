@@ -1,3 +1,6 @@
+[![Go Report Card](https://goreportcard.com/badge/github.com/LuciferInLove/dynamic-sshmenu-aws)](https://goreportcard.com/report/github.com/LuciferInLove/dynamic-sshmenu-aws)
+[![License](https://img.shields.io/badge/license-MIT-red.svg)](./LICENSE.md)
+
 # dynamic-sshmenu-aws
 
 Dynamically builds aws instances addresses selection sshmenu-style lists by tags.
