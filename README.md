@@ -1,5 +1,6 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/LuciferInLove/dynamic-sshmenu-aws)](https://goreportcard.com/report/github.com/LuciferInLove/dynamic-sshmenu-aws)
 [![License](https://img.shields.io/badge/license-MIT-red.svg)](./LICENSE.md)
+![Build status](https://github.com/LuciferInLove/dynamic-sshmenu-aws/workflows/Build/badge.svg)
 
 # dynamic-sshmenu-aws
 

@@ -1,0 +1,22 @@
+builds:
+- binary: dynamic-sshmenu-aws
+  env:
+  - CGO_ENABLED=0
+  goos:
+  - linux
+  - darwin
+  - windows
+  goarch:
+  - amd64
+
+archives:
+- name_template: "{{ .ProjectName }}_{{ .Tag }}_{{ .Os }}_{{ .Arch }}"
+  format: tar.gz
+  format_overrides:
+  - goos: windows
+    format: zip
+  replacements:
+    amd64: x86_64
+    darwin: macOS
+  files:
+  - none*
