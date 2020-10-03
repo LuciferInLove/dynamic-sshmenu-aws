@@ -1,10 +1,6 @@
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
-github.com/LuciferInLove/promptui v0.7.0 h1:2cvObhHA4kLJdGCuxIw10Inmvdq1rWiM1BdaAGbzRho=
-github.com/LuciferInLove/promptui v0.7.0/go.mod h1:n4zTdgP0vr0S3w7/O/g98U+e0gwLScEXGwov2nIKuGQ=
-github.com/LuciferInLove/promptui v0.7.1-0.20200604215815-d8893f35f691 h1:p5iB/xsJsMO/lU0xXMYJHl33tFlMrxS5hXoqlP2jgIo=
-github.com/LuciferInLove/promptui v0.7.1-0.20200604215815-d8893f35f691/go.mod h1:n4zTdgP0vr0S3w7/O/g98U+e0gwLScEXGwov2nIKuGQ=
-github.com/LuciferInLove/promptui v0.7.1-0.20200730125009-7b2707b82ee7 h1:C5O4ctp1XtKhHFDiLCbtPOZFlMlEUK5QB6XjF47krew=
-github.com/LuciferInLove/promptui v0.7.1-0.20200730125009-7b2707b82ee7/go.mod h1:n4zTdgP0vr0S3w7/O/g98U+e0gwLScEXGwov2nIKuGQ=
+github.com/LuciferInLove/promptui v0.7.1-0.20201003113208-3398ab7c53db h1:1W+7EPFv+cNIapVnW/9S1ss2TWPBzr/K1OwlmdstPF4=
+github.com/LuciferInLove/promptui v0.7.1-0.20201003113208-3398ab7c53db/go.mod h1:n4zTdgP0vr0S3w7/O/g98U+e0gwLScEXGwov2nIKuGQ=
 github.com/aws/aws-sdk-go v1.32.13 h1:zzyXF7SUxJcJa3hTcYCl1/Ey+kh2N8TjK5tWnL0wieo=
 github.com/aws/aws-sdk-go v1.32.13/go.mod h1:5zCpMtNQVjRREroY7sYe8lOMRSxkhG6MZveU8YkpAk0=
 github.com/aws/aws-sdk-go v1.33.4 h1:lhVZe2TkSjJz26jPBCBAvJvAy70Yxxlbm/Ciw1gmyRY=

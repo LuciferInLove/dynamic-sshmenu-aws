@@ -22,11 +22,15 @@ type instance struct {
 }
 
 var (
-	version               = "v0.0.1"
+	version               = "v0.0.3"
 	appAuthor *cli.Author = &cli.Author{
 		Name:  "LuciferInLove",
 		Email: "lucifer.in.love@ya.ru",
 	}
+)
+
+const (
+	sshExecutable = "ssh"
 )
 
 func main() {
@@ -183,7 +187,13 @@ func action(c *cli.Context) error {
 		return err
 	}
 
-	cmd := exec.Command("ssh", instanceFromResult.IP)
+	sshPath, err := exec.LookPath(sshExecutable)
+
+	if err != nil {
+		return fmt.Errorf("%w", err)
+	}
+
+	cmd := exec.Command(sshPath, instanceFromResult.IP)
 	cmd.Stdin = os.Stdin
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
