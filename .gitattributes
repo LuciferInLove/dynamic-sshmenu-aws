@@ -1,0 +1,5 @@
+go.mod                  -diff
+go.sum                  -diff
+.editorconfig           -diff
+.gitattributes          -diff
+.gitignore              -diff

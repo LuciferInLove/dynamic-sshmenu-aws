@@ -22,10 +22,10 @@ type instance struct {
 }
 
 var (
-	version               = "v0.0.3"
+	version               = "v0.0.4"
 	appAuthor *cli.Author = &cli.Author{
 		Name:  "LuciferInLove",
-		Email: "lucifer.in.love@ya.ru",
+		Email: "lucifer.in.love@protonmail.com",
 	}
 )
 
@@ -48,16 +48,10 @@ func main() {
 
 	app.Flags = []cli.Flag{
 		&cli.StringFlag{
-			Name:     "search-key",
-			Aliases:  []string{"k"},
-			Usage:    "key of instance tag to search",
-			Required: true,
-		},
-		&cli.StringFlag{
-			Name:     "search-value",
-			Aliases:  []string{"s"},
-			Usage:    "value of instance tag to search",
-			Required: true,
+			Name:    "tags",
+			Aliases: []string{"t"},
+			Usage:   "instance tags in \"key1:value1,value2;key2:value1\" format. If undefined, full list will be shown",
+			Value:   "",
 		},
 		&cli.StringFlag{
 			Name:    "display-name",
@@ -169,9 +163,13 @@ func parseResult(result string) (instance, error) {
 }
 
 func action(c *cli.Context) error {
-	instances, err := getSliceOfInstances(c.String("search-key"), c.String("search-value"), c.String("display-name"))
+	instances, err := getSliceOfInstances(c.String("tags"), c.String("display-name"))
 
 	if err != nil {
+		if err.Error() == "WrongTagDefinition" {
+			cli.ShowAppHelp(c)
+			return fmt.Errorf("\nIncorrect Usage. Wrong tag definition in flag -t")
+		}
 		return fmt.Errorf("There was an error listing instances in:\n%w", err)
 	}
 

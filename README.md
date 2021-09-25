@@ -4,7 +4,7 @@
 
 # dynamic-sshmenu-aws
 
-Dynamically builds aws instances addresses selection sshmenu-style lists by tags.
+Dynamically creates a menu containing a list of AWS EC2 instances selected using tags.
 
 ## Overview
 
@@ -36,8 +36,7 @@ You can see the **dynamic-sshmenu-aws** help by running it without arguments or 
 
 ### Command Line Options
 
-	--search-key   value,   -k value    key of instance tag to search                           (Required)
-    --search-value value,   -s value    value of instance tag to search                         (Required)
+	  --tags value,           -t value    instance tags in "key1:value1,value2;key2:value1" format. If undefined, full list will be shown
     --display-name value,   -d value    key of instance tag to display its values in results    (default: "Name")
     --help,                 -h          show help
     --version,              -v          print the version
