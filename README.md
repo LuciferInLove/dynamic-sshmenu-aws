@@ -36,7 +36,7 @@ You can see the **dynamic-sshmenu-aws** help by running it without arguments or 
 
 ### Command Line Options
 
-	  --tags value,           -t value    instance tags in "key1:value1,value2;key2:value1" format. If undefined, full list will be shown
+	--tags value,           -t value    instance tags in "key1:value1,value2;key2:value1" format. If undefined, full list will be shown
     --display-name value,   -d value    key of instance tag to display its values in results    (default: "Name")
     --help,                 -h          show help
     --version,              -v          print the version
