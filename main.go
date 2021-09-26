@@ -22,7 +22,7 @@ type instance struct {
 }
 
 var (
-	version               = "v0.0.4"
+	version               = "v0.0.5"
 	appAuthor *cli.Author = &cli.Author{
 		Name:  "LuciferInLove",
 		Email: "lucifer.in.love@protonmail.com",
@@ -58,6 +58,12 @@ func main() {
 			Aliases: []string{"d"},
 			Usage:   "key of instance tag to display its values in results",
 			Value:   "Name",
+		},
+		&cli.BoolFlag{
+			Name:    "public-ip",
+			Aliases: []string{"p"},
+			Usage:   "use public ip instead of private",
+			Value:   false,
 		},
 	}
 
@@ -163,7 +169,7 @@ func parseResult(result string) (instance, error) {
 }
 
 func action(c *cli.Context) error {
-	instances, err := getSliceOfInstances(c.String("tags"), c.String("display-name"))
+	instances, err := getSliceOfInstances(c.String("tags"), c.String("display-name"), c.Bool("public-ip"))
 
 	if err != nil {
 		if err.Error() == "WrongTagDefinition" {

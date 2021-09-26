@@ -8,7 +8,7 @@ Dynamically creates a menu containing a list of AWS EC2 instances selected using
 
 ## Overview
 
-**dynamic-sshmenu-aws** generates sshmenu-style lists to connect to aws instances. It searches instances by aws instances tags that you can define as arguments. **dynamic-sshmenu-aws** executes `ssh __ip_address__` after choosing a menu item. Only private ip addresses are supported.
+**dynamic-sshmenu-aws** generates sshmenu-style lists to connect to aws instances. It searches instances by aws instances tags that you can define as arguments. **dynamic-sshmenu-aws** executes `ssh __ip_address__` after choosing a menu item.
 
 ## Preparations for using
 
@@ -16,7 +16,7 @@ First of all, you should setup credentials to interact with AWS services:
 * [via awscli](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html)
 * [manually](https://docs.aws.amazon.com/sdk-for-go/v1/developer-guide/configuring-sdk.html#specifying-credentials)
 
-Then you should setup ssh client to connect to aws instances via private addresses. If you are using bastion server, you can set it as proxy in ssh config as follows:
+If you are using bastion server, you can set it as proxy in ssh config as follows:
 
 ```
 Host 172.31.*.*
@@ -38,6 +38,7 @@ You can see the **dynamic-sshmenu-aws** help by running it without arguments or 
 
 	--tags value,           -t value    instance tags in "key1:value1,value2;key2:value1" format. If undefined, full list will be shown
     --display-name value,   -d value    key of instance tag to display its values in results    (default: "Name")
+    --public-ip,            -p          use public ip instead of private (default: false)
     --help,                 -h          show help
     --version,              -v          print the version
 

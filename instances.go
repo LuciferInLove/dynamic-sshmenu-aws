@@ -9,7 +9,7 @@ import (
 	"github.com/aws/aws-sdk-go/service/ec2"
 )
 
-func getSliceOfInstances(tags string, displayName string) ([]instance, error) {
+func getSliceOfInstances(tags string, displayName string, publicIP bool) ([]instance, error) {
 	var (
 		i                int = 1
 		sliceOfInstances []instance
@@ -69,9 +69,16 @@ func getSliceOfInstances(tags string, displayName string) ([]instance, error) {
 					instanceName = *tag.Value
 				}
 			}
+
+			var instanceIP string
+			if publicIP {
+				instanceIP = *inst.PublicIpAddress
+			} else {
+				instanceIP = *inst.PrivateIpAddress
+			}
 			currentInstance := instance{
 				Number: i,
-				IP:     *inst.PrivateIpAddress,
+				IP:     instanceIP,
 				Name:   instanceName,
 				Zone:   *inst.Placement.AvailabilityZone,
 			}
