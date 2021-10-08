@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"strings"
 
@@ -9,10 +10,10 @@ import (
 	"github.com/aws/aws-sdk-go/service/ec2"
 )
 
-func getSliceOfInstances(tags string, displayName string, publicIP bool) ([]instance, error) {
+func getSliceOfInstances(tags string, displayName string, publicIP bool) ([]string, error) {
 	var (
 		i                int = 1
-		sliceOfInstances []instance
+		sliceOfInstances []string
 		instanceName     string
 		filterMapsList   []*ec2.Filter
 	)
@@ -82,7 +83,12 @@ func getSliceOfInstances(tags string, displayName string, publicIP bool) ([]inst
 				Name:   instanceName,
 				Zone:   *inst.Placement.AvailabilityZone,
 			}
-			sliceOfInstances = append(sliceOfInstances, currentInstance)
+			currentInstanceString, err := json.Marshal(currentInstance)
+			if err != nil {
+				return sliceOfInstances, err
+			}
+
+			sliceOfInstances = append(sliceOfInstances, string(currentInstanceString))
 			i++
 		}
 	}

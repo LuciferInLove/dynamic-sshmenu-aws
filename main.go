@@ -1,12 +1,11 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
 	"os/exec"
-	"regexp"
 	"runtime"
-	"strconv"
 	"strings"
 
 	"github.com/chzyer/readline"
@@ -22,7 +21,7 @@ type instance struct {
 }
 
 var (
-	version               = "v0.0.5"
+	version               = "v0.1.0"
 	appAuthor *cli.Author = &cli.Author{
 		Name:  "LuciferInLove",
 		Email: "lucifer.in.love@protonmail.com",
@@ -70,11 +69,15 @@ func main() {
 	app.RunAndExitOnError()
 }
 
-func promptSelect(instances []instance) (string, error) {
+func promptSelect(instances []string) (string, error) {
 	var selectionSymbol string
 
 	searcher := func(input string, index int) bool {
-		instance := instances[index]
+		instance, err := parseInstance(instances[index])
+		if err != nil {
+			return false
+		}
+
 		name := strings.Replace(strings.ToLower(instance.Name), " ", "", -1)
 		input = strings.Replace(strings.ToLower(input), " ", "", -1)
 
@@ -89,10 +92,16 @@ func promptSelect(instances []instance) (string, error) {
 		selectionSymbol = "➜"
 	}
 
+	var funcMap = promptui.FuncMap
+	funcMap["parse"] = parseInstance
+
 	templates := promptui.SelectTemplates{
-		Label:    "{{ . | cyan }}",
-		Active:   fmt.Sprintf("%s %s", selectionSymbol, "{{ (printf \"%v.\t%v\t| %v (%v)\" .Number .IP .Name .Zone) | green }}"),
-		Inactive: "  {{ (printf \"%v.\t%v\t| %v (%v)\" .Number .IP .Name .Zone) | white }}",
+		Label: "{{ . | cyan }}",
+		Active: fmt.Sprintf("%s %s", selectionSymbol,
+			"{{ (printf \"%v.\t%v\t| %v (%v)\" (. | parse).Number (. | parse).IP (. | parse).Name (. | parse).Zone) | green }}",
+		),
+		Inactive: "  {{ (printf \"%v.\t%v\t| %v (%v)\" (. | parse).Number (. | parse).IP (. | parse).Name (. | parse).Zone) | white }}",
+		FuncMap:  funcMap,
 	}
 
 	prompt := promptui.Select{
@@ -145,27 +154,13 @@ func promptSelect(instances []instance) (string, error) {
 	return result, nil
 }
 
-func parseResult(result string) (instance, error) {
-	var (
-		parsedResult       []string
-		instanceFromResult instance
-	)
-
-	re := regexp.MustCompile(`{(\d+\s+\d+\.\d+\.\d+\.\d+\s+\S+\s+\S+)}`)
-	parsedResult = strings.Fields(re.ReplaceAllString(result, "$1"))
-
-	if instanceNumber, err := strconv.Atoi(parsedResult[0]); err == nil {
-		instanceFromResult = instance{
-			Number: instanceNumber,
-			IP:     string(parsedResult[1]),
-			Name:   string(parsedResult[2]),
-			Zone:   string(parsedResult[3]),
-		}
-	} else {
-		return instanceFromResult, err
+func parseInstance(element string) (instance, error) {
+	var instanceParsed instance
+	if err := json.Unmarshal([]byte(element), &instanceParsed); err != nil {
+		return instanceParsed, err
 	}
 
-	return instanceFromResult, nil
+	return instanceParsed, nil
 }
 
 func action(c *cli.Context) error {
@@ -185,7 +180,7 @@ func action(c *cli.Context) error {
 		return err
 	}
 
-	instanceFromResult, err := parseResult(result)
+	instanceFromResult, err := parseInstance(result)
 
 	if err != nil {
 		return err
