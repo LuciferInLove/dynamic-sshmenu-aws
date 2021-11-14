@@ -21,7 +21,8 @@ type instance struct {
 }
 
 var (
-	version               = "v0.1.0"
+	connectTo string
+	version               = "v0.1.1"
 	appAuthor *cli.Author = &cli.Author{
 		Name:  "LuciferInLove",
 		Email: "lucifer.in.love@protonmail.com",
@@ -63,6 +64,12 @@ func main() {
 			Aliases: []string{"p"},
 			Usage:   "use public ip instead of private",
 			Value:   false,
+		},
+		&cli.StringFlag{
+			Name:    "ssh-username",
+			Aliases: []string{"u"},
+			Usage:   "ssh username. If undefined, the current user will be used",
+			Value:   "",
 		},
 	}
 
@@ -164,6 +171,7 @@ func parseInstance(element string) (instance, error) {
 }
 
 func action(c *cli.Context) error {
+	username := c.String("ssh-username")
 	instances, err := getSliceOfInstances(c.String("tags"), c.String("display-name"), c.Bool("public-ip"))
 
 	if err != nil {
@@ -192,7 +200,13 @@ func action(c *cli.Context) error {
 		return fmt.Errorf("%w", err)
 	}
 
-	cmd := exec.Command(sshPath, instanceFromResult.IP)
+	if username == "" {
+		connectTo = instanceFromResult.IP
+	} else {
+		connectTo = username + "@" + instanceFromResult.IP
+	}
+
+	cmd := exec.Command(sshPath, connectTo)
 	cmd.Stdin = os.Stdin
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
