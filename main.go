@@ -156,8 +156,7 @@ func action(c *cli.Context) error {
 			cli.ShowAppHelp(c)
 			return fmt.Errorf("\nIncorrect Usage. Wrong tag definition in flag -t")
 		}
-		//return fmt.Errorf("Listing AWS instances:\n%w", err)
-		instances = []string{`{"Number":1,"IP":"172.16.0.11","Name":"test-instance","Zone":"us-east-1a"}`}
+		return fmt.Errorf("Listing AWS instances:\n%w", err)
 	}
 
 	result, err := promptSelect(instances)

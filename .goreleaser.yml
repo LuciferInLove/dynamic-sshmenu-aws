@@ -15,8 +15,5 @@ archives:
   format_overrides:
   - goos: windows
     format: zip
-  replacements:
-    amd64: x86_64
-    darwin: macOS
   files:
   - none*
