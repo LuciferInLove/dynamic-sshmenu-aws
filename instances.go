@@ -10,6 +10,22 @@ import (
 	"github.com/aws/aws-sdk-go/service/ec2"
 )
 
+type instance struct {
+	Number int
+	IP     string
+	Name   string
+	Zone   string
+}
+
+func parseInstance(element string) (instance, error) {
+	var instanceParsed instance
+	if err := json.Unmarshal([]byte(element), &instanceParsed); err != nil {
+		return instanceParsed, err
+	}
+
+	return instanceParsed, nil
+}
+
 func getSliceOfInstances(tags string, displayName string, publicIP bool) ([]string, error) {
 	var (
 		i                int = 1

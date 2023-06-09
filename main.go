@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"os"
 	"os/exec"
@@ -13,16 +12,9 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-type instance struct {
-	Number int
-	IP     string
-	Name   string
-	Zone   string
-}
-
 var (
 	connectTo string
-	version               = "v0.1.1"
+	version               = "v0.1.2"
 	appAuthor *cli.Author = &cli.Author{
 		Name:  "LuciferInLove",
 		Email: "lucifer.in.love@protonmail.com",
@@ -149,53 +141,43 @@ func promptSelect(instances []string) (string, error) {
 	_, result, err := prompt.Run()
 
 	if err != nil {
-		if err == promptui.ErrInterrupt {
-			return result, fmt.Errorf("Interrupted by \"%w\"", err)
-		} else if err == promptui.ErrEOF {
-			return result, fmt.Errorf("Unexpected end of file: \"%w\"", err)
-		} else {
-			return result, err
-		}
+		return result, err
 	}
 
 	return result, nil
 }
 
-func parseInstance(element string) (instance, error) {
-	var instanceParsed instance
-	if err := json.Unmarshal([]byte(element), &instanceParsed); err != nil {
-		return instanceParsed, err
-	}
-
-	return instanceParsed, nil
-}
-
 func action(c *cli.Context) error {
 	username := c.String("ssh-username")
-	instances, err := getSliceOfInstances(c.String("tags"), c.String("display-name"), c.Bool("public-ip"))
 
+	instances, err := getSliceOfInstances(c.String("tags"), c.String("display-name"), c.Bool("public-ip"))
 	if err != nil {
 		if err.Error() == "WrongTagDefinition" {
 			cli.ShowAppHelp(c)
 			return fmt.Errorf("\nIncorrect Usage. Wrong tag definition in flag -t")
 		}
-		return fmt.Errorf("There was an error listing instances in:\n%w", err)
+		//return fmt.Errorf("Listing AWS instances:\n%w", err)
+		instances = []string{`{"Number":1,"IP":"172.16.0.11","Name":"test-instance","Zone":"us-east-1a"}`}
 	}
 
 	result, err := promptSelect(instances)
-
 	if err != nil {
-		return err
+		switch err {
+		case promptui.ErrInterrupt:
+			return nil
+		case promptui.ErrEOF:
+			return fmt.Errorf("Unexpected end of file: \"%w\"", err)
+		default:
+			return err
+		}
 	}
 
 	instanceFromResult, err := parseInstance(result)
-
 	if err != nil {
 		return err
 	}
 
 	sshPath, err := exec.LookPath(sshExecutable)
-
 	if err != nil {
 		return fmt.Errorf("%w", err)
 	}
@@ -210,8 +192,8 @@ func action(c *cli.Context) error {
 	cmd.Stdin = os.Stdin
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
-	err = cmd.Run()
 
+	err = cmd.Run()
 	if err != nil {
 		return fmt.Errorf("Command finished with an error, ssh: %w", err)
 	}
